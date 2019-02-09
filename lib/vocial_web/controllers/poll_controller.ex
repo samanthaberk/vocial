@@ -1,11 +1,14 @@
 defmodule VocialWeb.PollController do
-  use VocialWeb, :controller
+ use VocialWeb, :controller
+ alias Vocial.Votes
 
-  def index(conn, _params) do
-   polls = Vocial.Votes.list_polls()
+ def index(conn, _params) do
+   polls = Votes.list_polls()
+   render conn, "index.html", polls: polls
+ end
 
-   conn
-   |> put_layout(:special)
-   |> render("index.html", polls: polls)
+ def new(conn, _params) do
+   poll = Votes.new_poll()
+   render conn, "new.html", poll: poll
  end
 end
