@@ -13,16 +13,16 @@ defmodule Vocial.Votes do
   end
 
   def create_poll_with_options(poll_attrs, options) do
-    Repo.transaction(fn ->
-      with {:ok, poll} <- create_poll(poll_attrs),
-           {:ok, _options} <- create_options(options, poll)
-      do
-        poll
-      else
-        _ -> Repo.rollback("Failed to create poll")
-      end
-      end)
-  end
+     Repo.transaction(fn ->
+       with {:ok, poll} <- create_poll(poll_attrs),
+            {:ok, _options} <- create_options(options, poll)
+       do
+         poll |> Repo.preload(:options)
+       else
+         _ -> Repo.rollback("Failed to create poll!")
+       end
+     end)
+   end
 
   def create_poll(attrs) do
     %Poll{}
@@ -47,4 +47,8 @@ defmodule Vocial.Votes do
     |> Option.changeset(attrs)
     |> Repo.insert()
   end
+
+  def list_options do
+   Repo.all(Option) |> Repo.preload(:poll)
+ end
 end
