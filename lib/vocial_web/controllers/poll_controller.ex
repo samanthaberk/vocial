@@ -2,18 +2,10 @@ defmodule VocialWeb.PollController do
   use VocialWeb, :controller
 
   def index(conn, _params) do
-   poll = %{
-     title: "My First Poll",
-     options: [
-       {"Choice 1", 0},
-       {"Choice 2", 5},
-       {"Choice 3", 2}
-     ]
-   }
+   polls = Vocial.Votes.list_polls()
 
    conn
    |> put_layout(:special)
-   |> render("index.html", poll: poll)
+   |> render("index.html", polls: polls)
  end
-
 end
