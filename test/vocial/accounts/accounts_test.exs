@@ -60,5 +60,14 @@ defmodule Vocial.AccountsTest do
     password_confirmation: "fail"})
       assert !changeset.valid?
     end
+
+    test "get_user_by_username/1 returns the user with the matching username" do
+      user = user_fixture()
+      assert Accounts.get_user_by_username(user.username)
+    end
+
+    test "get_user_by_username/1 returns nil with no matching username" do
+      assert is_nil(Accounts.get_user_by_username("fail"))
+    end
   end
 end
