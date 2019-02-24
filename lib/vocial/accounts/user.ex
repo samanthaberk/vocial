@@ -25,6 +25,8 @@ defmodule Vocial.Accounts.User do
     |> validate_confirmation(:password, message: "does not match password!")
     |> encrypt_password()
     |> validate_required([:username, :email, :active])
+    |> unique_constraint(:username)
+    |> validate_format(:email, ~r/@/)
   end
 
   def encrypt_password(changeset) do
