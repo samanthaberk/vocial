@@ -23,7 +23,7 @@ defmodule VocialWeb.Router do
     resources "/sessions", SessionController, only: [:create]
 
     get "/login", SessionController, :new
-    get "/logout", SessionController, :delete
+    delete "/logout", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
