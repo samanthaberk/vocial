@@ -12,7 +12,7 @@ defmodule Vocial.AccountsTest do
   }
 
   describe "users" do
-    @valid_attrs %{ username: "test", email: "test@test.com", active: true }
+    @valid_attrs %{ username: "test", email: "test@test.com", active: true,  password: "test", password_confirmation: "test"}
 
     def user_fixture(attrs \\ %{}) do
       with create_attrs <- Map.merge(@valid_attrs, attrs),
@@ -79,6 +79,16 @@ defmodule Vocial.AccountsTest do
 
     test "get_user_by_username/1 returns nil with no matching username" do
       assert is_nil(Accounts.get_user_by_username("fail"))
+    end
+
+    test "create_user/1 fails to create the user when the email is a fake email address" do
+      {:error, user} = user_fixture(%{email: "test@fake.com"})
+      assert !user.valid?
+    end
+
+    test "create_user/1 fails to create the user when the username is too short" do
+      {:error, user} = user_fixture(%{username: "a"})
+      assert !user.valid?
     end
   end
 end

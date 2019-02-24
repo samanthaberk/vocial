@@ -23,18 +23,27 @@ defmodule Vocial.Accounts.User do
     user
     |> cast(attrs, [:username, :email, :active, :password, :password_confirmation])
     |> validate_confirmation(:password, message: "does not match password!")
-    |> encrypt_password()
-    |> validate_required([:username, :email, :active])
     |> unique_constraint(:username)
+    |> validate_length(:username, min: 3, max: 100)
+    |> encrypt_password()
+    |> validate_not_fake(:email)
+    |> validate_required([:username, :active, :encrypted_password])
     |> validate_format(:email, ~r/@/)
   end
 
   def encrypt_password(changeset) do
     with password when not is_nil(password) <- get_change(changeset, :password) do
-      put_change(changeset, :encrypted_password,
-      Comeonin.Bcrypt.hashpwsalt(password))
+      put_change(changeset, :encrypted_password, Comeonin.Bcrypt.hashpwsalt(password))
     else
       _-> changeset
     end
   end
+
+  def validate_not_fake(changeset, key) do
+    case get_change(changeset, key) do
+      "test@fake.com" -> add_error(changeset, key, "cannot be a fake email!")
+      _ -> changeset
+    end
+  end
+
 end
