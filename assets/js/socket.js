@@ -10,17 +10,19 @@ const socket = new Socket("/socket");
 // Connect to the socket
 socket.connect();
 
-// Create a channel to handle joining/sending/receiving
-  // Specify which topic the client should be listening to
-const channel = socket.channel('polls:lobby', {});
+// Only connect to the socket if the polls channel actually exists
+if (document.getElementById('enable-polls-channel')) {
+  // Create a channel to handle joining/sending/receiving
+    // Specify which topic the client should be listening to
+  const channel = socket.channel('polls:lobby', {});
 
-// Join the topic on the channel
-channel
-  .join()
-  .receive('ok', res =>
-console.log('Joined channel:', res))
-  .receive('error', res =>
-console.log('Failed to join channel:', res));
-
+  // Join the topic on the channel
+  channel
+    .join()
+    .receive('ok', res =>
+  console.log('Joined channel:', res))
+    .receive('error', res =>
+  console.log('Failed to join channel:', res));
+}
 // Export the socket to be imported in app.js
 export default socket;
