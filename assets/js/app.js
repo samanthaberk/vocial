@@ -8,10 +8,12 @@ import css from "../css/app.css"
 // in "webpack.config.js".
 //
 // Import dependencies
-//
+
+// Import the default Phoenix HTML libraries
 import "phoenix_html"
 
 // Import local files
-//
 // Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
+
+// Import the User Socket code to enable websockets
+import socket from "./socket"
