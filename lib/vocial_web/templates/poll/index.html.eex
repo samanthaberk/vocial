@@ -7,3 +7,4 @@
    <br />
  <% end %>
 <% end %>
+<button id="polls-ping" class="btn btn-primary">Ping Websocket</button>

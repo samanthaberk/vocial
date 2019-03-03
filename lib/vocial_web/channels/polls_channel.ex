@@ -5,4 +5,9 @@ defmodule VocialWeb.PollsChannel do
     {:ok, socket}
   end
 
+  def handle_in("ping", _payload, socket) do
+    broadcast socket, "pong", %{message: "pong"}
+    {:reply, {:ok, %{message: "pong"}}, socket}
+  end
+
 end
